@@ -1,0 +1,37 @@
+name: zizmor
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/**", "uv.lock"]
+  pull_request:
+    paths: [".github/**", "uv.lock"]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  zizmor:
+    name: Audit GitHub Actions workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+
+      - name: Run zizmor (version from uv.lock)
+        env:
+          # Read-only token for the online audits (impostor commits, ref and version checks).
+          GH_TOKEN: ${{ github.token }}
+        run: uv run --frozen --only-group dev zizmor --format github .github

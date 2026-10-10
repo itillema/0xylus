@@ -34,6 +34,20 @@ Run tasks through `uv run` so that the project's tools are on `PATH`:
 
 pytest collects only `tests/`. `uv run just test` is the same as `uv run pytest -q -m "not integration"`.
 
+## Continuous integration
+
+| Workflow | Runs on | What it does |
+| --- | --- | --- |
+| `ci.yml` | pushes to `main`, pull requests | `just check` on Ubuntu, macOS and Windows × Python 3.12–3.14; `just integration` on Ubuntu |
+| `zizmor.yml` | changes to `.github/` or `uv.lock` | Audits the workflows with zizmor |
+| `audit.yml` | dependency changes, weekly | Audits every locked dependency with pip-audit |
+| `dco.yml` | pull requests | Checks that each commit has a `Signed-off-by` line matching its author; bot commits are skipped |
+| `scorecard.yml` | pushes to `main`, weekly | OpenSSF Scorecard analysis |
+
+Every action is pinned to a full commit SHA, with its release tag in a comment. Dependabot proposes updates for
+actions and Python dependencies weekly, after a 7-day cooldown. To audit the workflows locally, run
+`uv run zizmor .github`; set `GH_TOKEN` to a GitHub token to include the online audits.
+
 ## Rules the linter enforces
 
 Library code under `src/` must not:

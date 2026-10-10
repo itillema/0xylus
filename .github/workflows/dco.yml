@@ -1,0 +1,60 @@
+name: DCO
+
+on:
+  pull_request:
+
+permissions: {}
+
+concurrency:
+  group: dco-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dco:
+    name: Check Signed-off-by lines
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the pull request with full history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check that every commit is signed off by its author
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # The checkout is GitHub's merge commit: its first parent is the current base branch and
+          # its second parent is the pull request head, so HEAD^1..HEAD^2 is exactly the PR's commits.
+          if [ "$(git rev-parse HEAD^2)" != "$HEAD_SHA" ]; then
+            echo "::error::The checked-out merge commit does not contain the pull request head."
+            exit 1
+          fi
+          # Commit metadata is untrusted: only compare it, and keep it out of workflow commands
+          # (lines that start with "::").
+          failed=0
+          for sha in $(git rev-list --no-merges HEAD^1..HEAD^2); do
+            name=$(git show -s --format='%an' "$sha" | tr -d '\r\n')
+            email=$(git show -s --format='%ae' "$sha" | tr -d '\r\n')
+            case "$name|$email" in
+              *'[bot]|'* | *'[bot]@users.noreply.github.com')
+                echo "skip $sha (bot author)"
+                continue
+                ;;
+            esac
+            expected="Signed-off-by: $name <$email>"
+            if git show -s --format='%(trailers:key=Signed-off-by)' "$sha" | grep -qxF -- "$expected"; then
+              echo "ok   $sha"
+            else
+              echo "::error::Commit $sha has no Signed-off-by line that matches its author."
+              printf '    expected: %s\n' "$expected"
+              failed=1
+            fi
+          done
+          if [ "$failed" -ne 0 ]; then
+            echo "Sign off each commit with 'git commit -s', or all of them with 'git rebase --signoff <base>'."
+            exit 1
+          fi
