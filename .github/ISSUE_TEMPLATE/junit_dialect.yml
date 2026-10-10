@@ -1,0 +1,43 @@
+name: New JUnit XML dialect
+description: Ask for support for another test framework or reporter, ideally with a real sample report.
+labels: ["adapter"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Each dialect needs a real report from the tool as a test fixture. Please don't edit the sample by hand, and
+        remove anything private from it first.
+  - type: input
+    id: producer
+    attributes:
+      label: Test framework and reporter
+      description: The tool that writes the JUnit XML, with its version.
+      placeholder: "Example: jest-junit reporter for Jest, version X.Y"
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: How the report is generated
+      description: The command or configuration that produces the file.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Sample report
+      description: A small, real report with at least one failure, and with retries if the tool supports them.
+      render: xml
+  - type: textarea
+    id: identity
+    attributes:
+      label: How tests are named
+      description: If you know, how the report identifies a test, its parameters and any retried attempts.
+  - type: checkboxes
+    id: sample-terms
+    attributes:
+      label: About the sample
+      options:
+        - label: The sample is unedited output from the tool.
+        - label: I can share the sample under a license compatible with Apache-2.0.

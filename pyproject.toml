@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-authors = [{ name = "Isaac Tillema" }]
+authors = [{ name = "Isaac Tillema", email = "isaactillema@isaactillema.com" }]
 keywords = ["flaky tests", "continuous integration", "junit", "pytest", "test reliability"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -27,6 +27,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = ["typer>=0.27.3"]
+
+[project.urls]
+Homepage = "https://github.com/itillema/0xylus"
+Source = "https://github.com/itillema/0xylus"
+Issues = "https://github.com/itillema/0xylus/issues"
 
 [project.optional-dependencies]
 llm = ["anthropic>=1.13.0"]
@@ -59,6 +64,8 @@ only-include = ["src", "tests", "LICENSE", "README.md"]
 target-version = "py312"
 line-length = 100
 src = [".", "src"]
+# Ruff's default include list without "*.md": format and lint code, not the code blocks in Markdown docs.
+include = ["*.py", "*.pyi", "*.pyw", "*.ipynb", "**/pyproject.toml", "**/ruff.toml", "**/.ruff.toml"]
 # Ruff only applies .gitignore inside a git repository, so these paths are named explicitly.
 extend-exclude = ["tests/fixtures", "benchmarks/zoo/out"]
 

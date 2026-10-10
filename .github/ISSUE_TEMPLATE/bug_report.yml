@@ -1,0 +1,63 @@
+name: Bug report
+description: Something in 0xylus doesn't work as documented.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please don't report security vulnerabilities here; see
+        [SECURITY.md](https://github.com/itillema/0xylus/blob/main/SECURITY.md) instead.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can we reproduce it?
+      description: The command you ran, plus a minimal JUnit XML file or configuration if one is involved.
+      placeholder: |
+        1. uv run 0xylus ...
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The output of `0xylus --version`.
+      placeholder: 0xylus 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.12"
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output
+      description: Error messages or logs. They're rendered as code, so you don't need backticks.
+      render: text
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before you submit
+      options:
+        - label: I removed secrets, tokens and private data from the output and from any attached files.
+          required: true
