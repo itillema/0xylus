@@ -1,0 +1,136 @@
+[build-system]
+requires = ["hatchling>=1.32.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "zeroxylus"
+version = "0.0.0"
+description = "Find flaky tests in CI history, group tests that fail together, rank likely root causes, and check with statistics whether a fix worked."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Isaac Tillema" }]
+keywords = ["flaky tests", "continuous integration", "junit", "pytest", "test reliability"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+dependencies = ["typer>=0.27.3"]
+
+[project.optional-dependencies]
+llm = ["anthropic>=1.13.0"]
+
+[project.scripts]
+0xylus = "zeroxylus.cli:main"
+zeroxylus = "zeroxylus.cli:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pre-commit>=4.6.2",
+    "pytest>=9.1.1",
+    "ruff>=0.16.10",
+    "rust-just>=1.58.0",
+    "scipy-stubs>=1.18.1.1",
+    "types-defusedxml>=0.7.0.20260504",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zeroxylus"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src", "tests", "LICENSE", "README.md"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = [".", "src"]
+# Ruff only applies .gitignore inside a git repository, so these paths are named explicitly.
+extend-exclude = ["tests/fixtures", "benchmarks/zoo/out"]
+
+[tool.ruff.lint]
+select = [
+    "A",   # flake8-builtins
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "NPY", # NumPy-specific rules
+    "PIE", # flake8-pie
+    "PT",  # flake8-pytest-style
+    "PTH", # flake8-use-pathlib
+    "RUF", # Ruff-specific rules
+    "S",   # flake8-bandit
+    "SIM", # flake8-simplify
+    "T20", # flake8-print
+    "TID", # flake8-tidy-imports
+    "UP",  # pyupgrade
+    "W",   # pycodestyle warnings
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests and benchmarks may use asserts, subprocesses, clocks and RNGs.
+"tests/**" = ["S101", "S603", "S607", "TID251"]
+"benchmarks/**" = ["S311", "S603", "S607", "T20", "TID251"]
+
+# The product invariants, enforced in library code. The modules that are allowed network or
+# subprocess access (ingest/github.py, github/, runners/, fix/) get a nested ruff config that
+# drops only those bans.
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"random".msg = "Use an injected, seeded numpy.random.Generator instead of the global RNG."
+"time.time".msg = "Use an injected clock instead of reading the system clock."
+"time.time_ns".msg = "Use an injected clock instead of reading the system clock."
+"datetime.datetime.now".msg = "Use an injected clock instead of reading the system clock."
+"datetime.datetime.utcnow".msg = "Use an injected clock instead of reading the system clock."
+"datetime.datetime.today".msg = "Use an injected clock instead of reading the system clock."
+"datetime.date.today".msg = "Use an injected clock instead of reading the system clock."
+"xml.etree.ElementTree.parse".msg = "Parse XML only with defusedxml."
+"xml.etree.ElementTree.iterparse".msg = "Parse XML only with defusedxml."
+"xml.etree.ElementTree.fromstring".msg = "Parse XML only with defusedxml."
+"xml.etree.ElementTree.fromstringlist".msg = "Parse XML only with defusedxml."
+"xml.etree.ElementTree.XML".msg = "Parse XML only with defusedxml."
+"xml.etree.ElementTree.XMLParser".msg = "Parse XML only with defusedxml."
+"xml.etree.ElementTree.XMLPullParser".msg = "Parse XML only with defusedxml."
+"xml.dom.minidom".msg = "Parse XML only with defusedxml."
+"xml.dom.pulldom".msg = "Parse XML only with defusedxml."
+"xml.sax".msg = "Parse XML only with defusedxml."
+"lxml".msg = "Parse XML only with defusedxml."
+"subprocess".msg = "Subprocesses are allowed only in runners/."
+"os.system".msg = "Subprocesses are allowed only in runners/."
+"os.popen".msg = "Subprocesses are allowed only in runners/."
+"socket".msg = "Network access is allowed only in ingest/github.py, github/ and fix/."
+"http.client".msg = "Network access is allowed only in ingest/github.py, github/ and fix/."
+"urllib.request".msg = "Network access is allowed only in ingest/github.py, github/ and fix/."
+"httpx".msg = "Network access is allowed only in ingest/github.py, github/ and fix/."
+"anthropic".msg = "LLM calls are allowed only in fix/."
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+enable_error_code = ["ignore-without-code", "possibly-undefined", "redundant-expr", "truthy-bool"]
+files = ["src", "tests"]
+exclude = ['^tests/fixtures/']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+markers = [
+    "integration: runs installed commands or other subprocesses (select with -m integration)",
+]
+xfail_strict = true
+filterwarnings = ["error"]

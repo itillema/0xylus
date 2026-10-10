@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Environments and builds
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Tool caches and reports
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Local data stores
+*.duckdb
+*.duckdb.wal
+
+# Benchmark output (data is never committed)
+benchmarks/zoo/out/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
