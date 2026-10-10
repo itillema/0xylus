@@ -1,3 +1,4 @@
+import re
 from collections.abc import Callable
 
 import pytest
@@ -14,6 +15,14 @@ from zeroxylus.errors import (
 
 runner = CliRunner()
 
+# ANSI control sequences (CSI). Typer styles its help output when it detects CI (GITHUB_ACTIONS)
+# or FORCE_COLOR, which can split option names such as "--version" across escape codes.
+_ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
+
+
+def _plain(text: str) -> str:
+    return _ANSI.sub("", text)
+
 
 def test_version_prints_program_name_and_version() -> None:
     result = runner.invoke(cli.app, ["--version"])
@@ -26,7 +35,7 @@ def test_help_lists_the_version_option() -> None:
     result = runner.invoke(cli.app, ["--help"])
 
     assert result.exit_code == ExitCode.OK
-    assert "--version" in result.stdout
+    assert "--version" in _plain(result.stdout)
 
 
 def test_no_arguments_shows_help_as_a_usage_error() -> None:
@@ -34,7 +43,7 @@ def test_no_arguments_shows_help_as_a_usage_error() -> None:
 
     assert result.exit_code == ExitCode.USAGE
     # Typer picks the stream for this help text; check what the user sees.
-    assert "--version" in result.output
+    assert "--version" in _plain(result.output)
 
 
 def test_unknown_option_is_a_usage_error() -> None:
