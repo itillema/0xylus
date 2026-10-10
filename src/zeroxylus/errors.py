@@ -34,6 +34,24 @@ class ConfigError(UsageError):
     """The configuration file or environment is invalid."""
 
 
+class InputError(ZeroxylusError):
+    """An input file is unsafe, malformed or too large to process."""
+
+    exit_code = ExitCode.USAGE
+
+
+class UnsafeXMLError(InputError):
+    """An XML document uses a DTD, entity declarations or external references, which are refused."""
+
+
+class MalformedInputError(InputError):
+    """An input file is not well-formed, or is not the kind of document expected."""
+
+
+class InputTooLargeError(InputError):
+    """An input file is larger than the size limit."""
+
+
 class PolicyError(ZeroxylusError):
     """A policy check failed, such as a validation FAIL or a guard BLOCK."""
 

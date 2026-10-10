@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="3" failures="7" skipped="3" tests="29" time="0.066" timestamp="2026-10-10T17:43:59.706214+00:00" hostname="fixturegen"><testcase classname="tests.test_outcomes" name="test_passes" file="tests/test_outcomes.py" line="9" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_fails_with_assertion_diff" file="tests/test_outcomes.py" line="13" time="0.000"><failure message="assert [1, 2, 3] == [1, 2, 4]&#10;  &#10;  At index 2 diff: 3 != 4&#10;  Use -v to get more diff">def test_fails_with_assertion_diff():
+&gt;       assert [1, 2, 3] == [1, 2, 4]
+E       assert [1, 2, 3] == [1, 2, 4]
+E         
+E         At index 2 diff: 3 != 4
+E         Use -v to get more diff
+
+tests/test_outcomes.py:15: AssertionError</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_raises_unexpected_error" file="tests/test_outcomes.py" line="17" time="0.000"><failure message="ValueError: unexpected value: 42">def test_raises_unexpected_error():
+&gt;       raise ValueError("unexpected value: 42")
+E       ValueError: unexpected value: 42
+
+tests/test_outcomes.py:19: ValueError</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_errors_in_setup" file="tests/test_outcomes.py" line="26" time="0.000"><error message="failed on setup with &quot;RuntimeError: database fixture failed to start&quot;">@pytest.fixture
+    def broken_setup():
+&gt;       raise RuntimeError("database fixture failed to start")
+E       RuntimeError: database fixture failed to start
+
+tests/test_outcomes.py:24: RuntimeError</error><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_errors_in_teardown" file="tests/test_outcomes.py" line="36" time="0.000"><error message="failed on teardown with &quot;RuntimeError: cleanup failed&quot;">@pytest.fixture
+    def broken_teardown():
+        yield
+&gt;       raise RuntimeError("cleanup failed")
+E       RuntimeError: cleanup failed
+
+tests/test_outcomes.py:34: RuntimeError</error><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_fails_and_errors_in_teardown" file="tests/test_outcomes.py" line="40" time="0.000"><failure message="AssertionError: the call failed as well">broken_teardown = None
+
+    def test_fails_and_errors_in_teardown(broken_teardown):
+&gt;       raise AssertionError("the call failed as well")
+E       AssertionError: the call failed as well
+
+tests/test_outcomes.py:42: AssertionError</failure></testcase><testcase classname="tests.test_outcomes" name="test_fails_and_errors_in_teardown" file="tests/test_outcomes.py" line="40" time="0.000"><error message="failed on teardown with &quot;RuntimeError: cleanup failed&quot;">@pytest.fixture
+    def broken_teardown():
+        yield
+&gt;       raise RuntimeError("cleanup failed")
+E       RuntimeError: cleanup failed
+
+tests/test_outcomes.py:34: RuntimeError</error><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_skipped_by_marker" file="tests/test_outcomes.py" line="44" time="0.000"><skipped type="pytest.skip" message="not supported on this platform">/work/sample/tests/test_outcomes.py:45: not supported on this platform</skipped><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_skips_at_runtime" file="tests/test_outcomes.py" line="49" time="0.000"><skipped type="pytest.skip" message="service unavailable">/work/sample/tests/test_outcomes.py:51: service unavailable</skipped><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_expected_failure" file="tests/test_outcomes.py" line="53" time="0.000"><skipped type="pytest.xfail" message="known bug 123" /><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_unexpected_pass" file="tests/test_outcomes.py" line="58" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_unexpected_pass_strict" file="tests/test_outcomes.py" line="63" time="0.000"><failure message="[XPASS(strict)] must keep failing">[XPASS(strict)] must keep failing</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_writes_output" file="tests/test_outcomes.py" line="68" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+WARNING  sample:test_outcomes.py:72 a warning-level log record
+--------------------------------- Captured Out ---------------------------------
+line written to stdout
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+line written to stderr
+
+</system-err></testcase><testcase classname="tests.test_outcomes" name="test_records_property" file="tests/test_outcomes.py" line="74" time="0.000"><properties><property name="ticket" value="ABC-1" /></properties><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes.TestAccount" name="test_balance_starts_at_zero" file="tests/test_outcomes.py" line="79" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes.TestAccount.TestOverdraft" name="test_is_refused" file="tests/test_outcomes.py" line="83" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes.LegacyStyleTests" name="test_legacy_fail" file="tests/test_outcomes.py" line="91" time="0.000"><failure message="AssertionError: 'expected' != 'actual'&#10;- expected&#10;+ actual">self = &lt;test_outcomes.LegacyStyleTests testMethod=test_legacy_fail&gt;
+
+    def test_legacy_fail(self):
+&gt;       self.assertEqual("expected", "actual")
+E       AssertionError: 'expected' != 'actual'
+E       - expected
+E       + actual
+
+tests/test_outcomes.py:93: AssertionError</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_outcomes.LegacyStyleTests" name="test_legacy_pass" file="tests/test_outcomes.py" line="88" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_ids_from_values[1]" file="tests/test_params.py" line="5" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_ids_from_values[2]" file="tests/test_params.py" line="5" time="0.000"><failure message="assert 2 != 2">value = 2
+
+    @pytest.mark.parametrize("value", [1, 2, 3])
+    def test_ids_from_values(value):
+&gt;       assert value != 2
+E       assert 2 != 2
+
+tests/test_params.py:8: AssertionError</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_ids_from_values[3]" file="tests/test_params.py" line="5" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_hostile_ids[&lt;script&gt;alert(1)&lt;/script&gt;]" file="tests/test_params.py" line="10" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_hostile_ids[pipe | in | a table]" file="tests/test_params.py" line="10" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_hostile_ids[@maintainer please look]" file="tests/test_params.py" line="10" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_hostile_ids[%0A encoded newline]" file="tests/test_params.py" line="10" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_hostile_ids[back`ticks`]" file="tests/test_params.py" line="10" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_hostile_ids[right-to-left \u202e override]" file="tests/test_params.py" line="10" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_hostile_ids[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" file="tests/test_params.py" line="10" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="tests.test_params" name="test_fails_with_hostile_message" file="tests/test_params.py" line="26" time="0.000"><failure message="AssertionError: &lt;b&gt;bold&lt;/b&gt; | @here `code` %0A ‮desrever">def test_fails_with_hostile_message():
+&gt;       raise AssertionError("&lt;b&gt;bold&lt;/b&gt; | @here `code` %0A \u202edesrever")
+E       AssertionError: &lt;b&gt;bold&lt;/b&gt; | @here `code` %0A ‮desrever
+
+tests/test_params.py:28: AssertionError</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase></testsuite></testsuites>

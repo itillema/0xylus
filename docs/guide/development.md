@@ -34,6 +34,23 @@ Run tasks through `uv run` so that the project's tools are on `PATH`:
 
 pytest collects only `tests/`. `uv run just test` is the same as `uv run pytest -q -m "not integration"`.
 
+## Test fixtures
+
+JUnit XML fixtures live in `tests/fixtures/junit/`. Each directory has a README that records where every file came
+from:
+- `pytest/` holds real pytest output, generated in Docker from a small sample project. Its README lists the command,
+  image digest, package versions and SHA-256 of every file, and the tests check those hashes.
+- `surefire/` holds real Maven Surefire output, generated the same way from two sample Maven projects (Surefire 3.6.0
+  and 3.5.4; JUnit 6, 5 and 4). Its `wild/` folder holds genuine reports copied unmodified from other open source
+  projects, with their licenses.
+- `synthetic/` holds hand-written hostile and malformed samples, each with the typed error it must raise.
+  `python tests/fixtures/junit/synthetic/make_samples.py` rewrites them. Fixtures are byte-exact (see
+`.gitattributes`), and ruff and mypy skip the directory.
+
+Untrusted XML goes through `zeroxylus.ingest.xmlsafe`. It uses defusedxml with DTDs, entities and external
+references refused, and caps the size at 200 MiB by default. It raises `UnsafeXMLError`, `MalformedInputError` or
+`InputTooLargeError`, which exit with code 2.
+
 ## Continuous integration
 
 | Workflow | Runs on | What it does |
