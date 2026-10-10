@@ -31,6 +31,7 @@ Run tasks through `uv run` so that the project's tools are on `PATH`:
 | `uv run just fmt` | Format the code and apply safe lint fixes |
 | `uv run just` | List all recipes |
 | `uv run 0xylus --version` | Print the version; `--help` lists the options |
+| `uv run python -m benchmarks.zoo --seed 1 --runs 30` | Generate a flaky-zoo suite and run it 30 times, writing JUnit XML |
 
 pytest collects only `tests/`. `uv run just test` is the same as `uv run pytest -q -m "not integration"`.
 
@@ -46,6 +47,10 @@ from:
 - `synthetic/` holds hand-written hostile and malformed samples, each with the typed error it must raise.
   `python tests/fixtures/junit/synthetic/make_samples.py` rewrites them. Fixtures are byte-exact (see
 `.gitattributes`), and ruff and mypy skip the directory.
+
+The flaky zoo in `benchmarks/zoo/` generates pytest suites with planted, seeded flakiness. Its tests, under
+`tests/unit/test_zoo_*.py`, include a pinned hash of one manifest, so a plan that differs on any Python version or OS
+fails CI. [benchmarks/zoo/README.md](../../benchmarks/zoo/README.md) is its specification.
 
 Untrusted XML goes through `zeroxylus.ingest.xmlsafe`. It uses defusedxml with DTDs, entities and external
 references refused, and caps the size at 200 MiB by default. It raises `UnsafeXMLError`, `MalformedInputError` or
